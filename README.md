@@ -1,0 +1,1 @@
+## Experimental Product Domain based on hexagonal architecture
