@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 
-namespace Infrastructure.Messaging
+namespace Infrastructure.Messaging.InProcess
 {
     public interface IHandle<in TMessage>
     {

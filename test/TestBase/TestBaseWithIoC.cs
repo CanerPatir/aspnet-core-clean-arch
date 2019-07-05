@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
+using AutoFixture;
 using FakeItEasy;
-
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -15,9 +16,9 @@ namespace TestBase
 
         protected TestBaseWithIoC() => _services = new ServiceCollection();
 
-        protected IConfiguration Configuration => InMemoryConfiguration != null ? 
-                                                    new ConfigurationBuilder().AddInMemoryCollection(InMemoryConfiguration).Build():
-                                                    new ConfigurationBuilder().AddJsonFile(ConfigJsonFilename).Build();
+        protected IConfiguration Configuration => InMemoryConfiguration != null
+            ? new ConfigurationBuilder().AddInMemoryCollection(InMemoryConfiguration).Build()
+            : new ConfigurationBuilder().AddJsonFile(ConfigJsonFilename).Build();
 
         protected virtual IDictionary<string, string> InMemoryConfiguration => null;
 
@@ -27,28 +28,18 @@ namespace TestBase
         {
         }
 
-        protected TestBaseWithIoC Building(Action<IServiceCollection> builder)
+        protected TestBaseWithIoC ConfigureServices(Action<IServiceCollection> builder)
         {
             builder(_services);
             return this;
         }
 
-        public void Ok()
+        public void Build()
         {
-            PreBuild();
             _localResolver = _services.BuildServiceProvider();
-            PostBuild();
         }
 
-        protected virtual void PreBuild()
-        {
-        }
-
-        protected virtual void PostBuild()
-        {
-        }
-
-        protected T The<T>() => _localResolver.GetRequiredService<T>();
+        protected T GetRequiredService<T>() => _localResolver.GetRequiredService<T>();
 
         protected virtual T Fake<T>(bool strict = false) where T : class
         {
@@ -93,6 +84,19 @@ namespace TestBase
 
         protected virtual T Ignore<T>() => A<T>.Ignored;
 
-        protected T Random<T>() => TestBase.Random<T>._;
+        protected T Matches<T>(Expression<Func<T, bool>> predicate) => A<T>.That.Matches(predicate);
+
+        private static readonly Fixture fixture = new Fixture();
+
+        protected T Random<T>()
+        {
+            if (typeof(T) == typeof(long))
+            {
+                return (T) Convert.ChangeType(new Random().Next(),
+                    typeof(T)); // workaround to avoid autoFixture's similer long values 
+            }
+
+            return fixture.Create<Generator<T>>().First();
+        }
     }
 }

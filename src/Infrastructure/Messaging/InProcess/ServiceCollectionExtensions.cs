@@ -5,11 +5,11 @@ using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
-namespace Infrastructure.Messaging
+namespace Infrastructure.Messaging.InProcess
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddMessaging(this IServiceCollection services)
+        public static IServiceCollection AddInProcessMessageBus(this IServiceCollection services)
         {
             services.AddSingleton<IBus, Bus>();
 

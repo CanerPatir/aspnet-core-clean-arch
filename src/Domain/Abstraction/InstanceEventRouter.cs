@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 namespace Domain
 {
-    /// <inheritdoc />
     /// <summary>
     ///     Routes an event to a configured state handler.
     /// </summary>
@@ -40,7 +39,6 @@ namespace Domain
             _handlers.Add(@event, handler);
         }
 
-        /// <inheritdoc />
         /// <summary>
         ///     Adds a route for the specified event type to the specified state handler.
         /// </summary>
@@ -57,7 +55,6 @@ namespace Domain
             _handlers.Add(typeof(TEvent), @event => handler((TEvent) @event));
         }
 
-        /// <inheritdoc />
         /// <summary>
         ///     Routes the specified <paramref name="event" /> to a configured state handler, if any.
         /// </summary>

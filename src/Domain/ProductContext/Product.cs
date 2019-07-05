@@ -7,20 +7,30 @@ namespace Domain.ProductContext
 {
     public class Product : AggregateRoot<Guid>
     {
-        public static readonly Func<CategoryRef, BrandRef, string, Product> Factory = (category, brand, code) => new Product(category, brand, code);
-        
         private readonly ICollection<AttributeRef> _attributes = new HashSet<AttributeRef>();
 
         private readonly ICollection<Content> _contents = new HashSet<Content>();
 
-        private Product(CategoryRef category, BrandRef brand, string code)
+        private Product()
         {
-            Brand = brand;
-            Category = category;
-            Code = code;
+            Register<ProductCreated>(Apply);
             Register<ContentCreated>(Apply);
             Register<AttributeAddedToProduct>(Apply);
             Register<VariantCreated>(Apply);
+        }
+        
+        public static Product Create(Guid productId,
+            int categoryId,
+            int brandId,
+            string productCode)
+        {
+            var product =  new Product();
+            product.ApplyChange(
+                new ProductCreated(productId,
+                    productCode,
+                    brandId, categoryId));
+
+            return product;
         }
 
         public BrandRef Brand { get; private set; }
@@ -33,21 +43,20 @@ namespace Domain.ProductContext
 
         public IReadOnlyCollection<AttributeRef> Attributes => _attributes.ToList();
 
-        private void Apply(ContentCreated @event)
-        {
-            _contents.Add(new Content(@event.Title, @event.Description, @event.SlicerAttribute));
-        }
+        private void Apply(ContentCreated @event) => _contents.Add(new Content(@event.Title, @event.Description, @event.SlicerAttribute));
 
-        private void Apply(AttributeAddedToProduct @event)
+        private void Apply(AttributeAddedToProduct @event) => _attributes.Add(@event.Attribute);
+
+        private void Apply(VariantCreated @event) => _contents.First(c => c.SlicerAttribute == @event.SlicerAttribute).Route(@event);
+
+        private void Apply(ProductCreated @event)
         {
-            _attributes.Add(@event.Attribute);
+            Id = @event.ProductId;
+            Brand = new BrandRef(@event.BrandId, "");
+            Category = new CategoryRef(@event.CategoryId, "");
+            Code = @event.ProductCode;
         }
         
-        private void Apply(VariantCreated @event)
-        {
-            _contents.First(c => c.SlicerAttribute == @event.SlicerAttribute).Route(@event);
-        }
-
         public void CreateContent(string title, string description, AttributeRef slicerAttribute)
         {
             Should(() => _contents.Any() && _contents.All(c => c.HasSameTypeSlicerAttribute(slicerAttribute)),
@@ -63,6 +72,7 @@ namespace Domain.ProductContext
             var content = _contents.SingleOrDefault(c => c.SlicerAttribute == slicerAttribute);
             ShouldNot(content == null, "No content found with given slicer attribute.");
             
+            // ReSharper disable once PossibleNullReferenceException
             var variantsOfContent = content.Variants;
            
             Should(() => variantsOfContent.Any() && variantsOfContent.All(c => c.HasSameTypeVarianterAttribute(varianterAttribute)),

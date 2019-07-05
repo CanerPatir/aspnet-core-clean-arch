@@ -2,11 +2,13 @@ namespace Domain.ProductContext
 {
     public class ImageRef : ValueObject<ImageRef>
     {
-        public ImageRef(string path)
+        public ImageRef(string relativeUrl, string relativeThumbUrl)
         {
-            Path = path;
+            RelativeUrl = relativeUrl;
+            RelativeThumbUrl = relativeThumbUrl;
         }
 
-        public string Path { get; }
+        public string RelativeUrl { get; }
+        public string RelativeThumbUrl { get; }
     }
 }
