@@ -5,7 +5,7 @@ This project is a sample application built using .NET Core. The main goal of thi
 * Clean Architecture
 * Onion Architecture
 # Hexagonal architecture
-![hexagonal](https://raw.githubusercontent.com/CanerPatir/aspnet-core-clean-arch/master/hexagonal.png)
+![hexagonal](/hexagonal.png?raw=true "hexagonal")
 
 
 
