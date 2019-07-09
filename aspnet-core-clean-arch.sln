@@ -15,6 +15,7 @@ ProjectSection(SolutionItems) = preProject
 	Directory.build.props = Directory.build.props
 	README.md = README.md
 	LICENSE = LICENSE
+	hexagonal.png = hexagonal.png
 EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestBase", "test\TestBase\TestBase.csproj", "{87282F82-F2FE-497E-BC35-2ACEEF151153}"
