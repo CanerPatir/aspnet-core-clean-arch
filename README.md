@@ -10,10 +10,10 @@ This project is a sample application built using .NET Core. The main goal of thi
 
 
 With hexagonal architecture
-* Domain contains enterprise wide logic and types and does not depend anything except these 
-* Application contains business logic and types
-* Infrastructure (including persistence, messaging, logging, presentation) contains all external concerns
-* Presentation and Infrastructure depend only on Application
+* Domain layer contains enterprise wide logic and types and does not depend anything except these 
+* Application layer contains business logic and types
+* Infrastructure layer (including persistence, messaging, logging, presentation) contains all external concerns
+* Presentation and Infrastructure layers depend only on Application
 * Infrastructure dependencies can be replaced
 with minimal effort. For instance, we can switch data store without touching business code. 
 
@@ -23,7 +23,7 @@ Use these instructions to get the project up and running.
 ### Prerequisites
 You will need the following tools:
 
-* [Visual Studio Code or 2017](https://www.visualstudio.com/downloads/)
+* [Visual Studio Code or 2019](https://www.visualstudio.com/downloads/) or [JetBrains Rider](https://www.jetbrains.com/rider/download)
 * [.NET Core SDK 2.2](https://www.microsoft.com/net/download/dotnet-core/2.2)
 
 ### Setup
