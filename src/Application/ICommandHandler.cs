@@ -1,9 +1,10 @@
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Application
 {
     public interface ICommandHandler<in TMessage>
     {
-        Task HandleAsync(TMessage message);
+        Task Handle(TMessage message, CancellationToken cancellationToken);
     }
 }

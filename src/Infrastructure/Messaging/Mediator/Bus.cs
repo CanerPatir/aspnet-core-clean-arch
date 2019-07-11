@@ -20,7 +20,7 @@ namespace Infrastructure.Messaging.Mediator
             var handler = _serviceProvider.GetRequiredService<ICommandHandler<TMessage>>();
             if (handler == null) throw new NullReferenceException($"handler of {nameof(TMessage)}");
 
-            return handler.HandleAsync(message);
+            return handler.Handle(message, cancellationToken);
         }
 
         public Task<TResult> SendAsync<TMessage, TResult>(TMessage message, CancellationToken cancellationToken)
@@ -29,7 +29,7 @@ namespace Infrastructure.Messaging.Mediator
             if (handler == null)
                 throw new NullReferenceException($"handler of {nameof(TMessage)} which returning {nameof(TResult)}");
 
-            return handler.HandleAsync(message);
+            return handler.Handle(message, cancellationToken);
         }
     }
 }

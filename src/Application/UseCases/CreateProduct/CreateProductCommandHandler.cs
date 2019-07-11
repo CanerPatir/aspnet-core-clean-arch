@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Domain.ProductContext;
 
@@ -13,11 +14,11 @@ namespace Application.UseCases.CreateProduct
             _productRepository = productRepository;
         }
 
-        public async Task HandleAsync(CreateProductCommand command)
+        public async Task Handle(CreateProductCommand command, CancellationToken cancellationToken)
         {
             var newProduct = Product.Create(Guid.NewGuid(), command.CategoryId, command.BrandId, command.ProductCode);
             
-            await _productRepository.Save(newProduct);
+            await _productRepository.Save(newProduct, cancellationToken);
         }
     }
 }
