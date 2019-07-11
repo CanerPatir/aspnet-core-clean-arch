@@ -40,7 +40,7 @@ Follow these steps to get your development environment set up:
      ```
   5. Run tests
      ```
-	    dotnet test
+     dotnet test
 	 ```
 ## Technologies
 * .NET Core 2.2

@@ -1,6 +1,7 @@
 using System.Reflection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.Graylog;
@@ -11,9 +12,9 @@ namespace Infrastructure.Logging
 {
     public static class WebHostExtensions
     {
-        public static IWebHostBuilder ConfigureLoggingInfra(this IWebHostBuilder webHostBuilder)
+        public static IWebHostBuilder ConfigureLoggingPlumbing(this IWebHostBuilder webHostBuilder)
         {
-            // webHostBuilder.ConfigureLogging((context, logging) => logging.ClearProviders());
+            webHostBuilder.ConfigureLogging((context, logging) => logging.ClearProviders());
 
             return webHostBuilder.UseSerilog((context, loggerConfiguration) =>
             {

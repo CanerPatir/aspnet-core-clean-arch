@@ -7,6 +7,7 @@ namespace Domain
 {
     public interface IAggregateRoot
     {
+        int Version { get; }
         bool HasChanges();
         IEnumerable<object> GetUncommittedChanges();
         void MarkChangesAsCommitted();
@@ -43,22 +44,22 @@ namespace Domain
         {
             foreach (var e in history) ApplyChange(e, false);
         }
-        
+
         protected void Register<TEvent>(Action<TEvent> handler)
         {
             if (handler == null) throw new ArgumentNullException(nameof(handler));
             _router.ConfigureRoute(handler);
         }
- 
+
         protected void ApplyChange(object @event)
         {
             ApplyChange(@event, true);
         }
-        
+
         protected void ApplyChange(object @event, bool isNew)
         {
             if (@event == null) throw new ArgumentNullException(nameof(@event));
-            
+
             _router.Route(@event);
             if (isNew)
             {
@@ -66,7 +67,7 @@ namespace Domain
                 Version++;
             }
         }
- 
+
         #region overrides
 
         /// <inheritdoc />
@@ -109,7 +110,7 @@ namespace Domain
             }
 
             //Transient objects are not considered as equal
-            var other = (AggregateRoot<TKey>)obj;
+            var other = (AggregateRoot<TKey>) obj;
             if (IsTransient() && other.IsTransient())
             {
                 return false;
@@ -143,40 +144,39 @@ namespace Domain
             !(left == right);
 
         #endregion
-        
+
         #region rule helpers
 
         protected void ShouldNot(bool clause)
         {
-            if(!clause) throw new BusinessException();
+            if (!clause) throw new BusinessException();
         }
-        
+
         protected void Should(bool clause)
         {
-            if(clause) throw new BusinessException();
+            if (clause) throw new BusinessException();
         }
-        
+
         protected void ShouldNot(bool clause, string message)
         {
-            if(!clause) throw new BusinessException(message);
+            if (!clause) throw new BusinessException(message);
         }
-        
+
         protected void Should(bool clause, string message)
         {
-            if(clause) throw new BusinessException(message);
+            if (clause) throw new BusinessException(message);
         }
 
         protected void Should(Func<bool> predicate)
         {
             if (!predicate()) throw new BusinessException();
         }
-        
+
         protected void Should(Func<bool> predicate, string message)
         {
             if (!predicate()) throw new BusinessException(message);
         }
-        
+
         #endregion
-        
     }
 }

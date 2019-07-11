@@ -1,16 +1,11 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Application;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Infrastructure.Messaging.InProcess
+namespace Infrastructure.Messaging.Mediator
 {
-    public interface IBus
-    {
-        Task SendAsync<TMessage>(TMessage message, CancellationToken cancellationToken);
-        Task<TResult> SendAsync<TMessage, TResult>(TMessage message, CancellationToken cancellationToken);
-    }
-
     public class Bus : IBus
     {
         private readonly IServiceProvider _serviceProvider;
@@ -22,7 +17,7 @@ namespace Infrastructure.Messaging.InProcess
 
         public Task SendAsync<TMessage>(TMessage message, CancellationToken cancellationToken)
         {
-            var handler = _serviceProvider.GetRequiredService<IHandle<TMessage>>();
+            var handler = _serviceProvider.GetRequiredService<ICommandHandler<TMessage>>();
             if (handler == null) throw new NullReferenceException($"handler of {nameof(TMessage)}");
 
             return handler.HandleAsync(message);
@@ -30,7 +25,7 @@ namespace Infrastructure.Messaging.InProcess
 
         public Task<TResult> SendAsync<TMessage, TResult>(TMessage message, CancellationToken cancellationToken)
         {
-            var handler = _serviceProvider.GetRequiredService<IHandle<TMessage, TResult>>();
+            var handler = _serviceProvider.GetRequiredService<IQueryHandler<TMessage, TResult>>();
             if (handler == null)
                 throw new NullReferenceException($"handler of {nameof(TMessage)} which returning {nameof(TResult)}");
 

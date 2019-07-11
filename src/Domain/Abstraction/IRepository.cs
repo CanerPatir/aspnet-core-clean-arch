@@ -1,3 +1,5 @@
+using System.Threading.Tasks;
+
 namespace Domain.Abstraction
 {
     /// <summary>
@@ -7,7 +9,7 @@ namespace Domain.Abstraction
     /// <typeparam name="TKey">Type of aggregate root's key</typeparam>
     public interface IRepository<T, TKey> where T : AggregateRoot<TKey>
     {
-        void Save(T aggregate, int expectedVersion);
-        T Load(TKey id);
+        Task Save(T aggregate);
+        Task<T> Load(TKey id);
     }
 }

@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿
 using System.Threading.Tasks;
+using Infrastructure;
+using Infrastructure.Logging;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 
 namespace WebApi
 {
@@ -16,6 +13,7 @@ namespace WebApi
         {
             await WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
+                .ConfigureLoggingPlumbing()
                 .Build()
                 .RunAsync();
         }

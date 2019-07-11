@@ -2,10 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Microsoft.Extensions.DependencyInjection;
+using Application;
+using Infrastructure.Messaging.Mediator;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
-namespace Infrastructure.Messaging.InProcess
+namespace Microsoft.Extensions.DependencyInjection
 {
     public static class ServiceCollectionExtensions
     {
@@ -20,13 +21,13 @@ namespace Infrastructure.Messaging.InProcess
                 Assembly.GetExecutingAssembly()
             }.Distinct().ToArray();
 
-            ConnectImplementationsToTypesClosing(typeof(IHandle<>), services, assembliesToScan, false);
-            ConnectImplementationsToTypesClosing(typeof(IHandle<,>), services, assembliesToScan, false);
+            ConnectImplementationsToTypesClosing(typeof(ICommandHandler<>), services, assembliesToScan, false);
+            ConnectImplementationsToTypesClosing(typeof(IQueryHandler<,>), services, assembliesToScan, false);
 
             var multiOpenInterfaces = new[]
             {
-                typeof(IHandle<>),
-                typeof(IHandle<,>)
+                typeof(ICommandHandler<>),
+                typeof(IQueryHandler<,>)
             };
 
             foreach (var multiOpenInterface in multiOpenInterfaces)
