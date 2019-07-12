@@ -10,15 +10,15 @@ namespace WebApi.UseCases.CreateProduct
     [ApiController]
     public class ProductsController : ControllerBase
     {
-        private readonly IBus _bus;
+        private readonly IMediator _mediator;
 
-        public ProductsController(IBus bus) => _bus = bus;
+        public ProductsController(IMediator mediator) => _mediator = mediator;
 
         // POST api/products
         [HttpPost]
         public async Task Post([FromBody] CreateProductCommand command, CancellationToken cancellationToken)
         {
-            await _bus.SendAsync(command, cancellationToken);
+            await _mediator.SendAsync(command, cancellationToken);
         }
     }
 }

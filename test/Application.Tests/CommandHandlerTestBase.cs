@@ -11,7 +11,7 @@ namespace Application.Tests
             {
                 services
                     .AddInProcessMessageBus();
-            });
+            }).
             Build();
         } 
     }

@@ -11,7 +11,7 @@ namespace Domain.ProductContext
 
         private readonly ICollection<Content> _contents = new HashSet<Content>();
 
-        private Product()
+        public Product()
         {
             Register<ProductCreated>(Apply);
             Register<ContentCreated>(Apply);

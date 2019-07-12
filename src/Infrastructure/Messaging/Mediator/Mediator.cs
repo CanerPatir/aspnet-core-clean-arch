@@ -6,11 +6,11 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Infrastructure.Messaging.Mediator
 {
-    public class Bus : IBus
+    public class Mediator : IMediator
     {
         private readonly IServiceProvider _serviceProvider;
 
-        public Bus(IServiceProvider serviceProvider)
+        public Mediator(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
         }
@@ -22,6 +22,13 @@ namespace Infrastructure.Messaging.Mediator
 
             return handler.Handle(message, cancellationToken);
         }
+
+        public Task PublishAsync<TEvent>(TEvent @event, CancellationToken cancellationToken = default)
+        {
+            var handler = _serviceProvider.GetRequiredService<IEventHandler<TEvent>>();
+            if (handler == null) throw new NullReferenceException($"handler of {nameof(TEvent)}");
+
+            return handler.Handle(@event, cancellationToken);        }
 
         public Task<TResult> SendAsync<TMessage, TResult>(TMessage message, CancellationToken cancellationToken)
         {

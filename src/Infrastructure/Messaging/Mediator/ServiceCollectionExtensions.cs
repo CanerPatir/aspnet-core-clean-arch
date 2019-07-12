@@ -12,7 +12,7 @@ namespace Microsoft.Extensions.DependencyInjection
     {
         public static IServiceCollection AddInProcessMessageBus(this IServiceCollection services)
         {
-            services.AddSingleton<IBus, Bus>();
+            services.AddSingleton<IMediator, Mediator>();
 
             var assembliesToScan = new[]
             {
