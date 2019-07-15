@@ -1,7 +1,7 @@
+using Domain.ProductContext;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using MongoDB.Driver;
 
 namespace Infrastructure.Persistence.Mongo
 {
@@ -12,8 +12,9 @@ namespace Infrastructure.Persistence.Mongo
         {
             return services
                 .Configure<MongoSettings>(configuration.GetSection("MongoDb"))
-                .AddScoped(c => MongoDbProvider.Provide(c.GetRequiredService<IOptions<MongoSettings>>().Value))
-                .AddScoped<IMongoDbContext, MongoDbContext>();
+                .AddSingleton(c => MongoDbProvider.Provide(c.GetRequiredService<IOptions<MongoSettings>>().Value))
+                .AddSingleton<IMongoDbContext, MongoDbContext>()
+                .AddScoped<IProductRepository, MongoDbProductRepository>();
         }
     }
 }

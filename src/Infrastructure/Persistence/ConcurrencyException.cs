@@ -1,6 +1,6 @@
 using System;
 
-namespace Infrastructure.Persistence.InMemory
+namespace Infrastructure.Persistence
 {
     public class ConcurrencyException : Exception
     {

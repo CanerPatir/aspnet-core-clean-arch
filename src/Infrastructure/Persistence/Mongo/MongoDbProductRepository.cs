@@ -1,32 +1,15 @@
 using System;
-using System.Threading;
-using System.Threading.Tasks;
 using Domain.ProductContext;
-using MongoDB.Driver;
-using MongoDB.Driver.Linq;
+using Infrastructure.Messaging.Mediator;
 
 namespace Infrastructure.Persistence.Mongo
 {
-    public class MongoDbProductRepository : IProductRepository
+    public class MongoDbProductRepository : MongoDbRepository<Product, Guid>, IProductRepository
     {
-        private readonly IMongoCollection<Product> _collection;
-
-        public MongoDbProductRepository(IMongoDbContext context)
+        public MongoDbProductRepository(IMongoDbContext context, IMediator mediator) : base(mediator, context)
         {
-            _collection = context.GetCollection<Product>("product");
-        }        
-        
-        public Task Save(Product aggregate, CancellationToken cancellationToken)
-        {  
-           return _collection.InsertOneAsync(aggregate, new InsertOneOptions()
-           {
-               BypassDocumentValidation = false
-           }, cancellationToken);
         }
 
-        public Task<Product> Load(Guid id, CancellationToken cancellationToken)
-        {
-            return _collection.AsQueryable().Where(p => p.Id == id).FirstOrDefaultAsync(cancellationToken);
-        }
+        protected override string CollectionName => "products";
     }
 }
