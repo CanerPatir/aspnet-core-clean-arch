@@ -3,13 +3,13 @@ using System.Threading;
 using System.Threading.Tasks;
 using Domain.ProductContext;
 
-namespace Infrastructure.Persistence.InMemory
+namespace Infrastructure.Persistence
 {
-    internal class InMemoryProductRepository : IProductRepository
+    internal class EventStoreProductRepository : IProductRepository
     {
         private readonly IEventStore _eventStore;
         
-        public InMemoryProductRepository(IEventStore eventStore) => _eventStore = eventStore;
+        public EventStoreProductRepository(IEventStore eventStore) => _eventStore = eventStore;
 
         public async Task Save(Product aggregate, CancellationToken cancellationToken)
         {

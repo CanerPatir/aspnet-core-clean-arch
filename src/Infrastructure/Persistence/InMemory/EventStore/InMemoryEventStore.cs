@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Infrastructure.Messaging.Mediator;
 
-namespace Infrastructure.Persistence.InMemory
+namespace Infrastructure.Persistence.InMemory.EventStore
 {
     public class InMemoryEventStore : IEventStore
     {

@@ -19,7 +19,7 @@ namespace WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services
-                .AddInfrastructure()
+                .AddInfrastructure(Configuration)
                 .AddAspNetInfrastructure();
         }
 
