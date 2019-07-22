@@ -57,7 +57,7 @@ namespace Domain.ProductContext
             Code = @event.ProductCode;
         }
         
-        public void CreateContent(string title, string description, AttributeRef slicerAttribute)
+        public void AddContent(string title, string description, AttributeRef slicerAttribute)
         {
             Should(() => _contents.Any() && _contents.All(c => c.HasSameTypeSlicerAttribute(slicerAttribute)),
                 "Given attribute type should belong to any content of product as slicer");
@@ -67,7 +67,7 @@ namespace Domain.ProductContext
             ApplyChange(new ContentCreated(Id, title, description, slicerAttribute));
         }
         
-        public void CreateVariant(string barcode, AttributeRef slicerAttribute, AttributeRef varianterAttribute)
+        public void AddVariant(string barcode, AttributeRef slicerAttribute, AttributeRef varianterAttribute)
         {
             var content = _contents.SingleOrDefault(c => c.SlicerAttribute == slicerAttribute);
             ShouldNot(content == null, "No content found with given slicer attribute.");
