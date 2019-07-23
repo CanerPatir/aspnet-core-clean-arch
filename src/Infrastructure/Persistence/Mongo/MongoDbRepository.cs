@@ -9,7 +9,7 @@ using MongoDB.Driver.Linq;
 
 namespace Infrastructure.Persistence.Mongo
 {
-    
+    // todo: https://github.com/NEventStore/NEventStore.Persistence.MongoDB review the impl
     public abstract class MongoDbRepository<TAggregate, TKey> : IRepository<TAggregate, TKey>
         where TAggregate : AggregateRoot<TKey>
     {

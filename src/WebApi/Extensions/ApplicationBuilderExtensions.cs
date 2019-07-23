@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 
-namespace Infrastructure.AspNet
+namespace WebApi.Extensions
 {
     public static class ApplicationBuilderExtensions
     {
@@ -30,7 +30,6 @@ namespace Infrastructure.AspNet
                     c.SwaggerEndpoint("/swagger/v1/swagger.json", "PimReadProjector API Swagger v1");
                 });
         }
-
 
         public static IApplicationBuilder UseApplicationHeaders(this IApplicationBuilder app,
             IHostingEnvironment hostingEnvironment,

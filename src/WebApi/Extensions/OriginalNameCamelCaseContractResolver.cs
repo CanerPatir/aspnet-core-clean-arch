@@ -4,7 +4,7 @@ using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace Infrastructure.AspNet
+namespace WebApi.Extensions
 {
     internal class OriginalNameCamelCaseContractResolver : CamelCasePropertyNamesContractResolver
     {

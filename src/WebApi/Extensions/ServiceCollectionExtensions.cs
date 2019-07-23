@@ -1,12 +1,13 @@
 using System;
 using System.IO;
 using System.Reflection;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
 
-namespace Infrastructure.AspNet
+namespace WebApi.Extensions
 {
     public static class ServiceCollectionExtensions
     {
@@ -29,8 +30,9 @@ namespace Infrastructure.AspNet
                     }
                 })
                 .AddResponseCompression()
-                .AddMvc()
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+                .AddMvc()                
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly()));
             return services;
         }
     }

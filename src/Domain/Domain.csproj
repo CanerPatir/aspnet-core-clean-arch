@@ -8,4 +8,8 @@
       <Folder Include="ProductContext\Repository" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="FluentValidation.AspNetCore" Version="8.4.0" />
+    </ItemGroup>
+
 </Project>

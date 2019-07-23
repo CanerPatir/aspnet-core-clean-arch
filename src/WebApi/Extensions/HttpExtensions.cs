@@ -7,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 
-namespace Infrastructure.AspNet
+namespace WebApi.Extensions
 {
     public static class HttpExtensions
     {
