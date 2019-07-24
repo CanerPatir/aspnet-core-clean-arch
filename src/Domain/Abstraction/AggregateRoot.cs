@@ -147,34 +147,26 @@ namespace Domain
 
         #region rule helpers
 
-        protected void ShouldNot(bool clause)
+        protected void Should(Func<bool> predicate)
         {
-            if (!clause) throw new BusinessException();
+            Should(predicate());
+        }
+
+        protected void Should(Func<bool> predicate, string otherwiseMessage)
+        {
+            Should(predicate(), otherwiseMessage);
         }
 
         protected void Should(bool clause)
         {
-            if (clause) throw new BusinessException();
+            if (clause) return;
+            throw new BusinessException();
         }
 
-        protected void ShouldNot(bool clause, string message)
+        protected void Should(bool clause, string otherwiseMessage)
         {
-            if (!clause) throw new BusinessException(message);
-        }
-
-        protected void Should(bool clause, string message)
-        {
-            if (clause) throw new BusinessException(message);
-        }
-
-        protected void Should(Func<bool> predicate)
-        {
-            if (!predicate()) throw new BusinessException();
-        }
-
-        protected void Should(Func<bool> predicate, string message)
-        {
-            if (!predicate()) throw new BusinessException(message);
+            if (clause) return;
+            throw new BusinessException(otherwiseMessage);
         }
 
         #endregion

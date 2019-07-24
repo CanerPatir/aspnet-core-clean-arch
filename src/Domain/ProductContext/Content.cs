@@ -17,10 +17,10 @@ namespace Domain.ProductContext
             Description = description;
             SlicerAttribute = slicerAttribute;
             
-            Register<VariantCreated>(Apply);
+            Register<VariantAddedToProduct>(Apply);
         }
 
-        private void Apply(VariantCreated @event)
+        private void Apply(VariantAddedToProduct @event)
         {
             _variants.Add(new Variant(@event.Barcode, @event.VarianterAttribute));
         }

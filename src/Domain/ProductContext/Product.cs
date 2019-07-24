@@ -14,9 +14,9 @@ namespace Domain.ProductContext
         public Product()
         {
             Register<ProductCreated>(Apply);
-            Register<ContentCreated>(Apply);
+            Register<ContentAddedToProduct>(Apply);
             Register<AttributeAddedToProduct>(Apply);
-            Register<VariantCreated>(Apply);
+            Register<VariantAddedToProduct>(Apply);
         }
         
         public static Product Create(Guid productId,
@@ -43,11 +43,11 @@ namespace Domain.ProductContext
 
         public IReadOnlyCollection<AttributeRef> Attributes => _attributes.ToList();
 
-        private void Apply(ContentCreated @event) => _contents.Add(new Content(@event.Title, @event.Description, @event.SlicerAttribute));
+        private void Apply(ContentAddedToProduct @event) => _contents.Add(new Content(@event.Title, @event.Description, @event.SlicerAttribute));
 
         private void Apply(AttributeAddedToProduct @event) => _attributes.Add(@event.Attribute);
 
-        private void Apply(VariantCreated @event) => _contents.First(c => c.SlicerAttribute == @event.SlicerAttribute).Route(@event);
+        private void Apply(VariantAddedToProduct @event) => _contents.First(c => c.SlicerAttribute == @event.SlicerAttribute).Route(@event);
 
         private void Apply(ProductCreated @event)
         {
@@ -59,18 +59,22 @@ namespace Domain.ProductContext
         
         public void AddContent(string title, string description, AttributeRef slicerAttribute)
         {
-            Should(() => _contents.Any() && _contents.All(c => c.HasSameTypeSlicerAttribute(slicerAttribute)),
-                "Given attribute type should belong to any content of product as slicer");
+            if (_contents.Any())
+            {
+                Should(() => _contents.Any(c => c.HasSameTypeSlicerAttribute(slicerAttribute)),
+                    "Given attribute type should belong to any content of product as slicer");
+            }
+            
             Should(() => _contents.All(c => c.SlicerAttribute != slicerAttribute),
                 "Same content already exists with given attribute");
 
-            ApplyChange(new ContentCreated(Id, title, description, slicerAttribute));
+            ApplyChange(new ContentAddedToProduct(Id, title, description, slicerAttribute));
         }
         
         public void AddVariant(string barcode, AttributeRef slicerAttribute, AttributeRef varianterAttribute)
         {
             var content = _contents.SingleOrDefault(c => c.SlicerAttribute == slicerAttribute);
-            ShouldNot(content == null, "No content found with given slicer attribute.");
+            Should(() => content != null, "No content found with given slicer attribute.");
             
             // ReSharper disable once PossibleNullReferenceException
             var variantsOfContent = content.Variants;
@@ -81,7 +85,7 @@ namespace Domain.ProductContext
             Should(() => variantsOfContent.All(v => v.VarianterAttribute != varianterAttribute) ,
                 "Same variant already exists with given attribute");
             
-            ApplyChange(new VariantCreated(Id, barcode, slicerAttribute, varianterAttribute));
+            ApplyChange(new VariantAddedToProduct(Id, barcode, slicerAttribute, varianterAttribute));
         }
 
         public void AddAttributeToContent(AttributeRef attribute)

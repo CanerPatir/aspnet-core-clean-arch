@@ -30,7 +30,7 @@ namespace TestBase
             return this;
         }
 
-        public ScenarioForExisting<TAggregateRoot> ThenAssert(params object[] events)
+        public ScenarioForExisting<TAggregateRoot> Then(params object[] events)
         {
             foreach (var action in _whens)
             {
@@ -59,7 +59,7 @@ namespace TestBase
                 .BeEmpty("Aggregate should not have any events! But founded.");
         }
 
-        public void ThenThrows<TException>(string message = "") where TException : Exception
+        public void ThenThrows<TException>(string message = null) where TException : Exception
         {
             Action act = () =>
             {
@@ -69,7 +69,10 @@ namespace TestBase
                 }
             };
 
-            act.Should().Throw<TException>().WithMessage(message);
+            if (message != null)
+                act.Should().Throw<TException>().WithMessage(message);
+            else
+                act.Should().Throw<TException>();
         }
     }
 }

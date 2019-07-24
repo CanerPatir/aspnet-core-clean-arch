@@ -25,7 +25,7 @@ namespace TestBase
             return this;
         }
 
-        public void ThenAssert(params object[] events)
+        public void Then(params object[] events)
         {
             var logic = new CompareLogic().Compare(_aggregateRoot.GetUncommittedChanges().ToArray(), events);
             logic.AreEqual.Should().Be(true, "Expected domain event(s) should be fired");

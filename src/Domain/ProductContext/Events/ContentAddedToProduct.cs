@@ -2,9 +2,9 @@ using System;
 
 namespace Domain.ProductContext.Events
 {
-    public class ContentCreated : BaseProductEvent
+    public class ContentAddedToProduct : BaseProductEvent
     {
-        public ContentCreated(Guid productId, string title, string description, AttributeRef slicerAttribute)
+        public ContentAddedToProduct(Guid productId, string title, string description, AttributeRef slicerAttribute)
         {
             ProductId = productId;
             Title = title;

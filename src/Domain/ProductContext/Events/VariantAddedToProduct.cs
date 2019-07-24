@@ -2,9 +2,9 @@ using System;
 
 namespace Domain.ProductContext.Events
 {
-    public class VariantCreated: BaseProductEvent
+    public class VariantAddedToProduct: BaseProductEvent
     {
-        public VariantCreated(Guid productId, string barcode, AttributeRef slicerAttribute, AttributeRef varianterAttribute)
+        public VariantAddedToProduct(Guid productId, string barcode, AttributeRef slicerAttribute, AttributeRef varianterAttribute)
         {
             ProductId = productId;
             Barcode = barcode;

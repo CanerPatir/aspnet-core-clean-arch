@@ -25,7 +25,7 @@ namespace Domain.Specs.ProductSpecs
                     () => Product.Create(productId, categoryId, brandId, productCode)
                 )
                 .When(product => { })
-                .ThenAssert(productCreated);
+                .Then(productCreated);
         }
     }
 }
