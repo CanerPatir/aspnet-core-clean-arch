@@ -6,7 +6,7 @@ using Xunit;
 
 namespace Domain.Specs.ProductSpecs
 {
-    public class WhenCreated : SpecBase
+    public class WhenCreated : SpecBase<Product>
     {
         [Fact]
         public void Aggregate_Should_Be_Created_And_Publish_ProductCreated_Event()
@@ -21,7 +21,7 @@ namespace Domain.Specs.ProductSpecs
                 productCode,
                 brandId, categoryId);
 
-            new ScenarioFor<Product>(
+            ScenarioFor(
                     () => Product.Create(productId, categoryId, brandId, productCode)
                 )
                 .When(product => { })

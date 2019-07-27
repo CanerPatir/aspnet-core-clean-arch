@@ -78,9 +78,12 @@ namespace Domain.ProductContext
             
             // ReSharper disable once PossibleNullReferenceException
             var variantsOfContent = content.Variants;
-           
-            Should(() => variantsOfContent.Any() && variantsOfContent.All(c => c.HasSameTypeVarianterAttribute(varianterAttribute)),
-                "Given attribute type should belong to any variant of product as varianter");
+
+            if (variantsOfContent.Any())
+            {
+                Should(() =>  variantsOfContent.All(c => c.HasSameTypeVarianterAttribute(varianterAttribute)),
+                    "Given attribute type should belong to any variant of product as varianter");
+            }
             
             Should(() => variantsOfContent.All(v => v.VarianterAttribute != varianterAttribute) ,
                 "Same variant already exists with given attribute");
