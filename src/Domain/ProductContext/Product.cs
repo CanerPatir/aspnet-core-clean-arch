@@ -17,8 +17,9 @@ namespace Domain.ProductContext
             Register<ContentAddedToProduct>(Apply);
             Register<AttributeAddedToProduct>(Apply);
             Register<VariantAddedToProduct>(Apply);
+            Register<ImageAddedToProduct>(Apply);
         }
-        
+
         public static Product Create(Guid productId,
             int categoryId,
             int brandId,
@@ -43,6 +44,8 @@ namespace Domain.ProductContext
 
         public IReadOnlyCollection<AttributeRef> Attributes => _attributes.ToList();
 
+        public bool IsApproved { get; private set; }
+
         private void Apply(ContentAddedToProduct @event) => _contents.Add(new Content(@event.Title, @event.Description, @event.SlicerAttribute));
 
         private void Apply(AttributeAddedToProduct @event) => _attributes.Add(@event.Attribute);
@@ -55,6 +58,15 @@ namespace Domain.ProductContext
             Brand = new BrandRef(@event.BrandId, "");
             Category = new CategoryRef(@event.CategoryId, "");
             Code = @event.ProductCode;
+        }
+        
+        private void Apply(ImageAddedToProduct @event)
+        {
+            var variant = _contents.SelectMany(c => c.Variants)
+                .SingleOrDefault(v => v.VarianterAttribute == @event.VarianterAttr);
+            
+            // ReSharper disable once PossibleNullReferenceException
+            variant.Route(variant);
         }
         
         public void AddContent(string title, string description, AttributeRef slicerAttribute)
@@ -97,6 +109,20 @@ namespace Domain.ProductContext
                 "Given attribute had already been added to the product");
 
             ApplyChange(new AttributeAddedToProduct(Id, attribute));
+        }
+        
+        public void Approve()
+        {
+            Should(() => _contents.Any(), "Product must have at least one content");
+            Should(() => _contents.SelectMany(c => c.Variants).Any(), "Product must have at least one variant");
+            Should(() => _contents.SelectMany(c => c.Variants).SelectMany(v => v.Images).Any(), "Product must have at least one image");
+        } 
+        
+        public void AssignImage(ImageRef image, AttributeRef varianterAttr)
+        {
+            Should(() => _contents.SelectMany(c => c.Variants).Any(v => v.HasSameTypeVarianterAttribute(varianterAttr)),
+                $"Product does not have any attribute with given attributeId: {varianterAttr.AttributeId}");
+            ApplyChange(new ImageAddedToProduct(Id, varianterAttr, image));
         }
     }
 
