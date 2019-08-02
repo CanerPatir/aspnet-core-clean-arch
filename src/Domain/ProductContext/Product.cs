@@ -73,7 +73,7 @@ namespace Domain.ProductContext
                 .SingleOrDefault(v => v.VarianterAttribute == @event.VarianterAttr);
             
             // ReSharper disable once PossibleNullReferenceException
-            variant.Route(variant);
+            variant.Route(@event);
         }
         
         public void AddContent(string title, string description, AttributeRef slicerAttribute)
