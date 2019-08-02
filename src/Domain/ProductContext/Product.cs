@@ -17,6 +17,7 @@ namespace Domain.ProductContext
             Register<ContentAddedToProduct>(Apply);
             Register<AttributeAddedToProduct>(Apply);
             Register<VariantAddedToProduct>(Apply);
+            Register<ProductApproved>(Apply);
             Register<ImageAddedToProduct>(Apply);
         }
 
@@ -43,8 +44,14 @@ namespace Domain.ProductContext
         public IReadOnlyCollection<Content> Contents => _contents.ToList();
 
         public IReadOnlyCollection<AttributeRef> Attributes => _attributes.ToList();
+        
+        protected IReadOnlyCollection<Variant> Variants => _contents.SelectMany(c => c.Variants).ToList();
+        
+        protected IReadOnlyCollection<ImageRef> Images => Variants.SelectMany(c => c.Images).ToList();
 
         public bool IsApproved { get; private set; }
+        
+        private void Apply(ProductApproved @event) => IsApproved = true;
 
         private void Apply(ContentAddedToProduct @event) => _contents.Add(new Content(@event.Title, @event.Description, @event.SlicerAttribute));
 
@@ -114,17 +121,19 @@ namespace Domain.ProductContext
         public void Approve()
         {
             Should(() => _contents.Any(), "Product must have at least one content");
-            Should(() => _contents.SelectMany(c => c.Variants).Any(), "Product must have at least one variant");
-            Should(() => _contents.SelectMany(c => c.Variants).SelectMany(v => v.Images).Any(), "Product must have at least one image");
+            Should(() => Variants.Any(), "Product must have at least one variant");
+            Should(() => Variants.SelectMany(v => v.Images).Any(), "Product must have at least one image");
+            
+            ApplyChange(new ProductApproved(Id));
         } 
         
         public void AssignImage(ImageRef image, AttributeRef varianterAttr)
         {
-            Should(() => _contents.SelectMany(c => c.Variants).Any(v => v.HasSameTypeVarianterAttribute(varianterAttr)),
+            Should(() => Variants.Any(v => v.HasSameTypeVarianterAttribute(varianterAttr)),
                 $"Product does not have any attribute with given attributeId: {varianterAttr.AttributeId}");
+            
             ApplyChange(new ImageAddedToProduct(Id, varianterAttr, image));
         }
     }
 
-   
 }
