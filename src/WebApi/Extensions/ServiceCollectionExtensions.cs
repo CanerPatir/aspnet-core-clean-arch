@@ -31,7 +31,7 @@ namespace WebApi.Extensions
                 })
                 .AddResponseCompression()
                 .AddMvc()                
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly()));
             return services;
         }

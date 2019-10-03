@@ -10,7 +10,7 @@ namespace WebApi.Extensions
     public static class ApplicationBuilderExtensions
     {
         public static IApplicationBuilder UseAspNetInfrastructure(this IApplicationBuilder app,
-            IHostingEnvironment hostingEnvironment,
+            IWebHostEnvironment hostingEnvironment,
             IConfiguration configuration)
         {
             return app.UseResponseCompression()
@@ -32,7 +32,7 @@ namespace WebApi.Extensions
         }
 
         public static IApplicationBuilder UseApplicationHeaders(this IApplicationBuilder app,
-            IHostingEnvironment hostingEnvironment,
+            IWebHostEnvironment hostingEnvironment,
             IConfiguration configuration)
         {
             var appVersion = configuration["APP_VERSION"] ??

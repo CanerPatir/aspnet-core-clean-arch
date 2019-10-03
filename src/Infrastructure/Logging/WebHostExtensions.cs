@@ -14,8 +14,6 @@ namespace Infrastructure.Logging
     {
         public static IWebHostBuilder ConfigureLoggingPlumbing(this IWebHostBuilder webHostBuilder)
         {
-            webHostBuilder.ConfigureLogging((context, logging) => logging.ClearProviders());
-
             return webHostBuilder.UseSerilog((context, loggerConfiguration) =>
             {
                 var logLevel = context.Configuration.GetValue<LogEventLevel>("Serilog:MinimumLevel:Default");

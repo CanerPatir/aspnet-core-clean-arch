@@ -1,26 +1,25 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netstandard2.0</TargetFramework>
+        <TargetFramework>netstandard2.1</TargetFramework>
     </PropertyGroup>
 
     <ItemGroup>
 
          
         <PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" /> 
-        <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.2.0" />
         
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.2.0" />
-        <PackageReference Include="Microsoft.Extensions.Logging" Version="2.2.0" />
-        <PackageReference Include="MongoDB.Driver" Version="2.8.1" />
-        <PackageReference Include="System.Threading.Tasks.Dataflow" Version="4.9.0" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Logging" Version="3.0.0" />
+        <PackageReference Include="MongoDB.Driver" Version="2.9.2" />
+        <PackageReference Include="System.Threading.Tasks.Dataflow" Version="4.10.0" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="4.0.1" />
 
 
-        <PackageReference Include="Serilog.AspNetCore" Version="2.1.1" />
+        <PackageReference Include="Serilog.AspNetCore" Version="3.0.0" />
         <PackageReference Include="Serilog.Sinks.ColoredConsole" Version="3.0.1" />
-        <PackageReference Include="Serilog.Settings.Configuration" Version="3.0.1" />
-        <PackageReference Include="Serilog.Sinks.Graylog" Version="2.0.8" />
+        <PackageReference Include="Serilog.Settings.Configuration" Version="3.1.0" />
+        <PackageReference Include="Serilog.Sinks.Graylog" Version="2.0.12" />
     </ItemGroup>
 
     <ItemGroup>

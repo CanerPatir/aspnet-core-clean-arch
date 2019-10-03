@@ -10,7 +10,7 @@ namespace Infrastructure.Persistence.Mongo
 
             MongoClientSettings clientSettings = new MongoClientSettings();
             clientSettings.Server = new MongoServerAddress(settings.Host, 10255);
-            clientSettings.UseSsl = settings.UseSsl;
+            clientSettings.UseTls = settings.UseSsl;
             if (settings.UseSsl)
             {
                 clientSettings.SslSettings = new SslSettings();
