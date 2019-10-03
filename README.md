@@ -24,7 +24,7 @@ Use these instructions to get the project up and running.
 You will need the following tools:
 
 * [Visual Studio Code or 2019](https://www.visualstudio.com/downloads/) or [JetBrains Rider](https://www.jetbrains.com/rider/download)
-* [.NET Core SDK 2.2](https://www.microsoft.com/net/download/dotnet-core/2.2)
+* [.NET Core SDK 3.0](https://www.microsoft.com/net/download/dotnet-core/3.0)
 
 ### Setup
 Follow these steps to get your development environment set up:
@@ -43,8 +43,8 @@ Follow these steps to get your development environment set up:
      dotnet test
 	 ```
 ## Technologies
-* .NET Core 2.2
-* ASP.NET Core 2.2
+* .NET Core 3.0
+* ASP.NET Core 3.0
 ## License
 This project is licensed under the MIT License - see the [LICENSE.md](https://github.com/CanerPatir/aspnet-core-clean-arch/blob/master/LICENSE) file for details.
 ## References
